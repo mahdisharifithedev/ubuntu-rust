@@ -10,7 +10,7 @@ jobs:
     name: Check for newer versions of Rust and update
     runs-on: ubuntu-latest
     container:
-      image: devraymondsh/ubuntu-rust:latest
+      image: mahdisharifithedev/ubuntu-rust:latest
     steps:
       - name: Update system
         run: apt-get update && apt-get --yes upgrade
@@ -19,7 +19,7 @@ jobs:
         run: apt-get install --yes git
 
       - name: Clone the repository
-        run: git clone https://github.com/devraymondsh/ubuntu-rust
+        run: git clone https://github.com/mahdisharifithedev/ubuntu-rust
 
       - name: Run the script
         run: ./ubuntu-rust/check-for-update/check-for-update.sh

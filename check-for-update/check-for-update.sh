@@ -28,7 +28,7 @@ git config --global user.email "github-actions@github.com"
 git config --global --add safe.directory $(realpath .)
 
 function workflow_creator {
-    local repo="devraymondsh/ubuntu-rust"
+    local repo="mahdisharifithedev/ubuntu-rust"
     local rust_version="$1"
     local ubuntu_codename="$2"
     local ubuntu_version="$3"
@@ -36,24 +36,24 @@ function workflow_creator {
 
     local tags=""
 
-    # e.g: devraymondsh/ubuntu-rust:23.04
-    # e.g: devraymondsh/ubuntu-rust:23.04-1.66
+    # e.g: mahdisharifithedev/ubuntu-rust:23.04
+    # e.g: mahdisharifithedev/ubuntu-rust:23.04-1.66
     tags+="$repo:$ubuntu_version,$repo:$ubuntu_version-$rust_version,"
 
-    # e.g: devraymondsh/ubuntu-rust:23.04-latest
-    # e.g: devraymondsh/ubuntu-rust:lunar
+    # e.g: mahdisharifithedev/ubuntu-rust:23.04-latest
+    # e.g: mahdisharifithedev/ubuntu-rust:lunar
     tags+="$repo:$ubuntu_version-latest,$repo:$ubuntu_codename,"
 
-    # e.g: devraymondsh/ubuntu-rust:lunar-1.66
-    # e.g: devraymondsh/ubuntu-rust:lunar-latest,
+    # e.g: mahdisharifithedev/ubuntu-rust:lunar-1.66
+    # e.g: mahdisharifithedev/ubuntu-rust:lunar-latest,
     tags+="$repo:$ubuntu_codename-$rust_version,$repo:$ubuntu_codename-latest"
 
     local workflow=${WORKFLOW_SAMPLE//_UBUNTU_RELEASE_VERSION_/$ubuntu_version}
 
     if $is_the_latest; then
-        # e.g: devraymondsh/ubuntu-rust:1.66,
-        # e.g: devraymondsh/ubuntu-rust:latest, 
-        # e.g: devraymondsh/ubuntu-rust:latest-1.66
+        # e.g: mahdisharifithedev/ubuntu-rust:1.66,
+        # e.g: mahdisharifithedev/ubuntu-rust:latest,
+        # e.g: mahdisharifithedev/ubuntu-rust:latest-1.66
         tags+=",$repo:$rust_version,$repo:latest,$repo:latest-$rust_version"
 
         workflow+=$DOCKERHUB_DESCRIPTION_UPDATER
@@ -63,24 +63,24 @@ function workflow_creator {
     workflow=${workflow//_DOCKER_IMAGE_TAGS_/$tags}
 
     local file_destination=".github/workflows/docker-$ubuntu_codename.yml"
-    echo "$workflow" > "$file_destination"
+    echo "$workflow" >"$file_destination"
 }
 
-workflow_creator "$LATEST_NO_MINOR_RUST_VERSION" "noble" "24.04" true
-workflow_creator "$LATEST_NO_MINOR_RUST_VERSION" "lunar" "23.04" false
+workflow_creator "$LATEST_NO_MINOR_RUST_VERSION" "resolute" "26.04" true
+workflow_creator "$LATEST_NO_MINOR_RUST_VERSION" "noble" "24.04" false
 workflow_creator "$LATEST_NO_MINOR_RUST_VERSION" "jammy" "22.04" false
 workflow_creator "$LATEST_NO_MINOR_RUST_VERSION" "focal" "20.04" false
 
 README=$(<README.md)
 README=${README//$CURRENT_NO_MINOR_RUST_VERSION/$LATEST_NO_MINOR_RUST_VERSION}
-echo "$README" > "README.md"
+echo "$README" >"README.md"
 
 INSTALL_SCRIPT=$(<install.sh)
 INSTALL_SCRIPT=${INSTALL_SCRIPT//$CURRENT_RUST_VERSION/$LATEST_RUST_VERSION}
-echo "$INSTALL_SCRIPT" > "install.sh"
+echo "$INSTALL_SCRIPT" >"install.sh"
 
-echo "$LATEST_RUST_VERSION" > "check-for-update/version.txt"
+echo "$LATEST_RUST_VERSION" >"check-for-update/version.txt"
 
 git add .
 git commit -m "Add rust v$LATEST_RUST_VERSION"
-git push "https://devraymondsh:$GITHUB_TOKEN@github.com/devraymondsh/ubuntu-rust.git"
+git push "https://mahdisharifithedev:$GITHUB_TOKEN@github.com/mahdisharifithedev/ubuntu-rust.git"

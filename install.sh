@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "check_certificate = off" >> ~/.wgetrc
+echo "check_certificate = off" >>~/.wgetrc
 
 apt-get update && apt-get install --yes --no-install-recommends apt-utils ca-certificates &&
     apt-get --yes upgrade && apt-get install --yes --no-install-recommends sudo build-essential wget curl
@@ -46,7 +46,8 @@ chmod +x rustup-init
 rm rustup-init
 apt-get autoremove --yes && apt-get autoclean --yes
 
-chmod -R a+w "$RUSTUP_HOME" "$CARGO_HOME"
+# `chmod -R` replaced with below for the `Value too large for defined data type (EOVERFLOW error)` problem on linux/arm/v7 (armhf)
+find "$RUSTUP_HOME" "$CARGO_HOME" -exec chmod a+w {} + || true
 
 rustup --version
 cargo --version

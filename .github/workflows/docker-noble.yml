@@ -10,38 +10,38 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v6
 
       - name: Setup QEMU
         id: qemu
-        uses: docker/setup-qemu-action@v2
+        uses: docker/setup-qemu-action@v4
         with:
           platforms: linux/amd64,linux/arm64,linux/armhf
 
       - name: Set up Docker Buildx
         id: buildx
-        uses: docker/setup-buildx-action@v2
+        uses: docker/setup-buildx-action@v4
 
       - name: Login to Docker Hub
-        uses: docker/login-action@v2
+        uses: docker/login-action@v4
         with:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_TOKEN }}
 
       - name: Build and push
         id: docker_build
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v7
         with:
           platforms: linux/amd64,linux/arm64,linux/armhf
           push: true
           file: dockerfiles/noble/Dockerfile
-          tags: devraymondsh/ubuntu-rust:24.04,devraymondsh/ubuntu-rust:24.04-1.96,devraymondsh/ubuntu-rust:24.04-latest,devraymondsh/ubuntu-rust:noble,devraymondsh/ubuntu-rust:noble-1.96,devraymondsh/ubuntu-rust:noble-latest,devraymondsh/ubuntu-rust:1.96,devraymondsh/ubuntu-rust:latest,devraymondsh/ubuntu-rust:latest-1.96
+          tags: mahdisharifithedev/ubuntu-rust:24.04,mahdisharifithedev/ubuntu-rust:24.04-1.96,mahdisharifithedev/ubuntu-rust:24.04-latest,mahdisharifithedev/ubuntu-rust:noble,mahdisharifithedev/ubuntu-rust:noble-1.96,mahdisharifithedev/ubuntu-rust:noble-latest
 
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
       - name: Update dockerhub description
-        uses: peter-evans/dockerhub-description@v3
+        uses: peter-evans/dockerhub-description@v5
         with:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_TOKEN }}
-          repository: devraymondsh/ubuntu-rust
+          repository: mahdisharifithedev/ubuntu-rust
